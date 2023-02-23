@@ -1,7 +1,30 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../AuthProvider/AuthProvider";
 
 const Register = () => {
+  const { createUser } = useContext(AuthContext);
+  const [error, setError] = useState("");
+
+  const handleSubmit = event => {
+    event.preventDefault();
+    const form = event.target;
+    const fullName = form.name.value;
+    const photoURL = form.photo.value;
+    const email = form.email.value;
+    const password = form.password.value;
+    console.log(fullName, email, password, photoURL);
+
+    createUser(email, password)
+      .then(result => {
+        const user = result.user;
+        setError("");
+        form.reset();
+        console.log(user);
+      })
+      .catch(error => setError(error.message));
+  };
+
   return (
     <div className="hero min-h-screen bg-base-200">
       <div className="hero-content flex-col">
@@ -9,14 +32,14 @@ const Register = () => {
           <h1 className="text-5xl font-bold">Register now!</h1>
         </div>
         <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
-          <form className="card-body">
+          <form onSubmit={handleSubmit} className="card-body">
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Full Name</span>
               </label>
               <input
                 type="text"
-                name="fullName"
+                name="name"
                 placeholder="Enter Your Full Name"
                 className="input input-bordered"
               />
@@ -27,7 +50,7 @@ const Register = () => {
               </label>
               <input
                 type="text"
-                name="photoURl"
+                name="photo"
                 placeholder="Your photo link"
                 className="input input-bordered"
               />
@@ -67,10 +90,13 @@ const Register = () => {
                 </Link>
               </label>
             </div>
+
+            <p className="text-danger">{error}</p>
             <div className="form-control mt-6">
               <button className="btn btn-primary">Register</button>
             </div>
           </form>
+
           {/* <div className="form-control m-6 mt-0">
           <button className="btn btn-outline btn-success">
             Login with Google
