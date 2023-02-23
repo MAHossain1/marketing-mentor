@@ -4,15 +4,15 @@ import { Link } from "react-router-dom";
 import { AuthContext } from "../AuthProvider/AuthProvider";
 
 const Login = () => {
-  const { loginUser } = useContext(AuthContext);
+  const { loginUser, googleSignIn, githubSignIn } = useContext(AuthContext);
 
   const handleSubmit = event => {
     event.preventDefault();
     const form = event.target;
     const email = form.email.value;
     const password = form.password.value;
-    // console.log(email, password);
 
+    // login using email and password
     loginUser(email, password)
       .then(result => {
         const user = result.user;
@@ -20,6 +20,20 @@ const Login = () => {
         form.reset();
         console.log(user);
       })
+      .catch(e => console.error(e));
+  };
+
+  // login with google
+  const handleGoogle = () => {
+    googleSignIn()
+      .then(() => {})
+      .catch(e => console.error(e));
+  };
+
+  // login with github
+  const handleGithub = () => {
+    githubSignIn()
+      .then(() => {})
       .catch(e => console.error(e));
   };
 
@@ -68,10 +82,16 @@ const Login = () => {
             </div>
           </form>
           <div className="form-control m-6 mt-0">
-            <button className="btn btn-outline btn-success">
+            <button
+              onClick={handleGoogle}
+              className="btn btn-outline btn-success"
+            >
               Login with Google
             </button>
-            <button className="btn btn-outline btn-success mt-2">
+            <button
+              onClick={handleGithub}
+              className="btn btn-outline btn-success mt-2"
+            >
               Login with Github
             </button>
           </div>
