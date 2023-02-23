@@ -1,16 +1,19 @@
 import React, { useContext } from "react";
 import { toast } from "react-hot-toast";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../AuthProvider/AuthProvider";
 
 const Login = () => {
   const { loginUser, googleSignIn, githubSignIn } = useContext(AuthContext);
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const handleSubmit = event => {
     event.preventDefault();
     const form = event.target;
     const email = form.email.value;
     const password = form.password.value;
+    let from = location.state?.from?.pathname || "/";
 
     // login using email and password
     loginUser(email, password)
@@ -18,6 +21,7 @@ const Login = () => {
         const user = result.user;
         toast.success("user logged in successfully");
         form.reset();
+        navigate(from, { replace: true });
         console.log(user);
       })
       .catch(e => console.error(e));

@@ -7,6 +7,7 @@ import Blog from "../Pages/Blog";
 import Courses from "../Pages/Courses";
 import Faq from "../Pages/Faq";
 import Home from "../Pages/Home";
+import RequireAuth from "../Private/RequireAuth/RequireAuth";
 
 const Routes = createBrowserRouter([
   {
@@ -19,7 +20,11 @@ const Routes = createBrowserRouter([
       },
       {
         path: "/courses",
-        element: <Courses></Courses>,
+        element: (
+          <RequireAuth>
+            <Courses></Courses>
+          </RequireAuth>
+        ),
       },
       {
         path: "/blog",
