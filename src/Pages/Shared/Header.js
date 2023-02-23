@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../AuthProvider/AuthProvider";
+import { FaUserAlt, IconName } from "react-icons/fa";
 
 const Header = () => {
   const { user, logOut } = useContext(AuthContext);
@@ -50,7 +51,16 @@ const Header = () => {
               <Link to="/faq">FAQ</Link>
             </li>
             <li>
-              <Link to="/login">Login</Link>
+              {user?.uid ? (
+                <button
+                  onClick={handleSignOut}
+                  className="btn btn-outline btn-success"
+                >
+                  Sign Out
+                </button>
+              ) : (
+                <Link to="/login">Login</Link>
+              )}
             </li>
           </ul>
         </div>
@@ -87,7 +97,20 @@ const Header = () => {
         </ul>
       </div>
       <div className="navbar-end">
-        <a className="btn">Get started</a>
+        <label
+          className="btn btn-ghost btn-circle avatar tooltip tooltip-left tooltip-info"
+          data-tip={user?.displayName}
+        >
+          <div className="w-10 rounded-full">
+            {user?.uid ? (
+              <img src={user?.photoURL} alt="" />
+            ) : (
+              <p className="text-3xl pl-2 pt-1">
+                <FaUserAlt />
+              </p>
+            )}
+          </div>
+        </label>
       </div>
     </div>
   );
