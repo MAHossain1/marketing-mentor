@@ -1,5 +1,5 @@
 import React from "react";
-import { useLoaderData } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
 import CourseCard from "../CourseCard/CourseCard";
 
 const Courses = () => {
@@ -14,12 +14,12 @@ const Courses = () => {
         </div>
         <ul className="py-4">
           {courses.map(course => (
-            <li
+            <p
               key={course.id}
               className="px-4 py-2 hover:bg-gray-700 cursor-pointer"
             >
-              {course.title}
-            </li>
+              <Link to={`/courses/${course.id}`}>{course.title}</Link>
+            </p>
           ))}
         </ul>
       </nav>
